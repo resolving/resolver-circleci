@@ -1,0 +1,16 @@
+# CircleCI defaults:
+# user: circleci
+# working directory: /home/circleci/project
+
+version: 2
+
+jobs:
+  build:
+    docker:
+      - image: circleci/buildpack-deps
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run: docker build -f awscli/Dockerfile . -t resolver/circleci-awscli
+      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run: docker push resolver/circleci-awscli
